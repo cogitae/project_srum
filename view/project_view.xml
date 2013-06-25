@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<openerp>
+    <data>
+        <!-- inherited view of edit_project (project.project form view) -->
+        <record model="ir.ui.view" id="view_project_project_form" >
+            <field name="name">project.project.form</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="project.edit_project"/>
+            <field name="arch" type="xml">
+                <label for="use_tasks" position="after">
+                    <field name="is_scrum" class="oe_inline"/>
+                    <label for="is_scrum"/>
+                </label>
+                <field name="user_id" position="replace">
+                    <field name="user_id" attrs="{'invisible':[('is_scrum', '=', True)]}"/>
+                    <field name="scrum_master_id" attrs="{'invisible':[('is_scrum', '=', False)]}"/>
+                    <field name="product_owner_id" attrs="{'invisible':[('is_scrum', '=', False)]}"/>
+                </field>
+                <!--<page string="Tasks Stages" position="after">
+                    <page string="Goal">
+                        <field name="goal"/>
+                    </page>
+                </page>-->
+            </field>
+        </record>
+        
+        <!-- inherited view of (project.project tree view) -->
+        <record model="ir.ui.view" id="view_project_project_tree">
+            <field name="name">view.project.project.tree</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="project.view_project"/>
+            <field name="arch" type="xml">
+                <field name="state" position="after">
+                    <button name="%(project_scrum.report_scrum_sprint_velocity)d"
+                            states="open,pending,close,cancel"
+                            string="Burndown Chart (points)" type="action" icon="gtk-print"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</openerp>
